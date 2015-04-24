@@ -11,13 +11,13 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.delete(' ').length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split.length
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.scan(@special_word).length
   end
 
   def loan_payment
@@ -32,7 +32,12 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+  rate = @apr.to_f/12/100
+  nper = @years.to_f*12
+  pv = @principal.to_f
+  c=(pv*rate*(1+rate)**nper)/((1+rate)**nper-1)
+
+    @monthly_payment = c
   end
 
   def time_between
@@ -47,43 +52,49 @@ class CalculationsController < ApplicationController
     #   So if you subtract one time from another, you will get an integer
     #   number of seconds as a result.
     # ================================================================================
+    time = @ending - @starting
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+
+
+    @seconds = time.to_f % 60
+    mintime = (time - @seconds.to_f)/60
+    @minutes = mintime % 60
+    hourtime = (mintime - @minutes)/60
+    @hours = hourtime % 24
+    daytime = (hourtime - @hours)/24
+    @days = daytime % 7
+    weektime = (daytime - @days)/7
+    @weeks = weektime % 52
+    @years = (weektime - @weeks) / 52
   end
 
   def descriptive_statistics
-    @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
+    @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
+    require 'descriptive_statistics'
     # ================================================================================
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort!
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.length
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @numbers.max - @numbers.min
+    @median = DescriptiveStatistics.median(@numbers)
+    @sum = DescriptiveStatistics.sum(@numbers)
 
-    @median = "Replace this string with your answer."
+    @mean = DescriptiveStatistics.mean(@numbers)
 
-    @sum = "Replace this string with your answer."
+    @variance = DescriptiveStatistics.variance(@numbers)
 
-    @mean = "Replace this string with your answer."
+    @standard_deviation = DescriptiveStatistics.standard_deviation(@numbers)
 
-    @variance = "Replace this string with your answer."
-
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    @mode = DescriptiveStatistics.mode(@numbers)
   end
 end
