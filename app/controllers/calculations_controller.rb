@@ -13,11 +13,14 @@ class CalculationsController < ApplicationController
 
     @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = @text.lstrip.length
+    @character_count_without_spaces = @text.split.join.length
+
+    counts = Hash.new 0
 
     @word_count = @text.split.size
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.scan(/@word_count/).count
+
   end
 
   def loan_payment
