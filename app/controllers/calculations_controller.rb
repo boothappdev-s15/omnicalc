@@ -39,7 +39,7 @@ class CalculationsController < ApplicationController
     months = @years*-12
     num = apr_decimal*@principal
     den = 1-((1+apr_decimal)**months)
-    @monthly_payment =   num/den
+    @monthly_payment =  num/den
   end
 
 
@@ -75,26 +75,41 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @sorted_numbers.first
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @sorted_numbers.last
 
-    @range = "Replace this string with your answer."
+    @range = @sorted_numbers.last - @sorted_numbers.first
 
-    @median = "Replace this string with your answer."
+    if @count.odd? == true
+      midpoint_odd = (@count / 2)
+      @median = @sorted_numbers[midpoint_odd]
+    else
+      midpoint_even_low = (@count / 2)-1
+      midpoint_even_high = (@count / 2)
+      @median = (@sorted_numbers[midpoint_even_low] + @sorted_numbers[midpoint_even_high])/2
+    end
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.inject(:+)
 
-    @mean = "Replace this string with your answer."
+    @mean = @sum / @count
 
-    @variance = "Replace this string with your answer."
+    all_squared = []
+    @numbers.each do |num|
+      indiv_squared = (num - @mean)**2
+      all_squared.push(indiv_squared)
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @variance = all_squared.sum / all_squared.count
 
-    @mode = "Replace this string with your answer."
+    @standard_deviation = @variance**0.5
+
+    freq = @numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    @mode = @numbers.max_by { |v| freq[v] }
+
   end
 end
