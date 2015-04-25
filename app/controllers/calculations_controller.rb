@@ -10,14 +10,23 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    character_length=  @text.length
+    @character_count_with_spaces = character_length.to_s
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    space= @text.count " "
+    @character_count_without_spaces = (character_length - space).to_s
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    no_of_words=@text.split.size
+    @word_count = no_of_words.to_s
 
-    @word_count = "Replace this string with your answer."
-
-    @occurrences = "Replace this string with your answer."
+n=0
+# That wierd symbol in the brackets removes the effect of symbols
+    @text.split(/\W+/).each do |word|
+if word.downcase == @special_word.downcase
+    n+=1
+end
+end
+    @occurrences = n.to_s
   end
 
   def loan_payment
