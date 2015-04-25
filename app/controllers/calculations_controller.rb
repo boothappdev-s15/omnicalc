@@ -40,8 +40,10 @@ end
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
-
-    @monthly_payment = "Replace this string with your answer."
+    months=@years*12
+    apr=@apr/1200
+    monthly_payment=(apr + (apr/ (((1+apr)**months)- 1)))*@principal
+    @monthly_payment =  monthly_payment.to_s
   end
 
   def time_between
