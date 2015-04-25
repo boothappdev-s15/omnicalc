@@ -11,13 +11,16 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
 
-    @word_count = "Replace this string with your answer."
+    @character_count_without_spaces = @text.length - @text.count(" ") - @text.count("\n") - @text.count("\r")
 
-    @occurrences = "Replace this string with your answer."
+
+    @word_count = @text.split.count
+
+    @occurrences = @special_word.split.count
+
   end
 
   def loan_payment
@@ -32,8 +35,13 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    apr_decimal = @apr/100/12
+    months = @years*-12
+    num = apr_decimal*@principal
+    den = 1-((1+apr_decimal)**months)
+    @monthly_payment =   num/den
   end
+
 
   def time_between
     @starting = Chronic.parse(params[:starting_time])
@@ -48,13 +56,16 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60
+    @hours = @minutes / 60
+    @days = @hours / 24
+    @weeks = @days / 7
+    @months = @days / 30
+    @years = @days / 365
   end
+
+
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
