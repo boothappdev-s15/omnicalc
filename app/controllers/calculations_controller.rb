@@ -11,13 +11,31 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
+    @character_count_without_spaces = @text.split(' ').join('').length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @word_count = @text.split(' ').length
 
-    @word_count = "Replace this string with your answer."
+   def counter(wrds, spec)
+       list = wrds.split
+       tally = 0
+       list.each do |count|
+        if count == spec
+          tally = tally + 1
+        end
 
-    @occurrences = "Replace this string with your answer."
+      end
+      return tally
+    end
+
+
+    @occurrences =  counter(@text,@special_word)
+
+
+
+
+
+
   end
 
   def loan_payment
@@ -31,8 +49,17 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
+    def loancalc(apr,years,principal)
+        apr = apr/100
+        num = apr * principal
+        den = 1-((1+apr)**(-years))
+       return num/den/12
+    end
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = loancalc(@apr,@years,@principal)
+
+
+
   end
 
   def time_between
@@ -48,12 +75,13 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = (@ending - @starting)
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @months = @weeks/4
+    @years = @weeks/52
   end
 
   def descriptive_statistics
