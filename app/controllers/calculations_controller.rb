@@ -1,7 +1,8 @@
+
 class CalculationsController < ApplicationController
 
   def word_count
-    @text = params[:user_text]
+    @text = params[:user_text].chomp
     @special_word = params[:user_word]
 
     # ================================================================================
@@ -10,14 +11,15 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    @character_count_with_spaces = @text.length
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ", "").length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @word_count = @text.split.count
 
-    @word_count = "Replace this string with your answer."
-
-    @occurrences = "Replace this string with your answer."
+    special_word_clean = @special_word.downcase.to_s
+    special_word_count = @text.downcase.scan(special_word_clean).count
+    @occurrences = special_word_count
   end
 
   def loan_payment
@@ -32,7 +34,13 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    apr_decimal = @apr/100/12
+    months = @years*-12
+    num = apr_decimal*@principal
+    den = 1-((1+apr_decimal)**months)
+
+    @monthly_payment = num/den
+
   end
 
   def time_between
@@ -48,12 +56,27 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    seconds = (@ending.to_f-@starting.to_f)
+
+    minutes = (@ending.to_f-@starting.to_f)/(60)
+
+    hours = (@ending.to_f-@starting.to_f)/(60*60)
+
+    days = (@ending.to_f-@starting.to_f)/(60*60*24)
+
+    weeks = (@ending.to_f-@starting.to_f)/(60*60*24)/7
+
+    months = (@ending.to_f-@starting.to_f)/(60*60*24)/30
+
+    years = (@ending.to_f-@starting.to_f)/(60*60*24)/365
+
+    @seconds = seconds
+    @minutes = minutes
+    @hours = hours
+    @days = days
+    @weeks = weeks
+    @months = months
+    @years = years
   end
 
   def descriptive_statistics
@@ -66,19 +89,21 @@ class CalculationsController < ApplicationController
 
     @sorted_numbers = "Replace this string with your answer."
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    range = @numbers.max-@numbers.min
+    @range = range
 
     @median = "Replace this string with your answer."
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    mean = @numbers.sum/@numbers.count
+    @mean = mean
 
     @variance = "Replace this string with your answer."
 
