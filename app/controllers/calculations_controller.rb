@@ -17,23 +17,26 @@ class CalculationsController < ApplicationController
     @word_count = @text.split(' ').length
 
    def counter(wrds, spec)
-       list = wrds.split
+       list = wrds.downcase.split(' ')
+
        tally = 0
        list.each do |count|
         if count == spec
           tally = tally + 1
+        elsif count == spec + '!'
+            tally = tally + 1
+        elsif count == spec + '.'
+             tally = tally + 1
+        elsif count == spec + '?'
+             tally = tally + 1
         end
-
       end
+
       return tally
     end
 
 
     @occurrences =  counter(@text,@special_word)
-
-
-
-
 
 
   end
@@ -50,10 +53,10 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
     def loancalc(apr,years,principal)
-        apr = apr/100
+        apr = apr/(100.0*12)
         num = apr * principal
-        den = 1-((1+apr)**(-years))
-       return num/den/12
+        den = 1.0-((1.0+apr)**(-years*12))
+       return num/den
     end
 
     @monthly_payment = loancalc(@apr,@years,@principal)
