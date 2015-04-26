@@ -90,10 +90,10 @@ end
         median= @numbers[(@count-1)/2]
     else
     if even == 0
-median = (@numbers[(@count+1)/2] + @numbers[(((@count+1)/2) -1)])/2
+median = ((@numbers[(@count+1)/2] + @numbers[(((@count+1)/2) -1)])/2).round(2)
 end
 end
-    @median = median.to_i
+    @median = median.to_f
 
 
     sum=0
@@ -101,14 +101,38 @@ end
         sum=sum+lion
 end
 
-    @sum = sum.to_i
+    @sum = sum.to_f
 
     @mean = (@sum/@count).round(2)
 
-    @variance = "Replace this string with your answer."
+    sum_sq=0
+    @numbers.each do |var|
+        var_sq=(var- @mean)**2
+        sum_sq=sum_sq+var_sq
+    end
+    variance=(sum_sq/@count).round(2)
 
-    @standard_deviation = "Replace this string with your answer."
+    @variance = variance.to_f
 
-    @mode = "Replace this string with your answer."
+    @standard_deviation = (@variance**0.5).round(2)
+
+# Used code from an online source for this
+
+def mode(array)
+  counter = Hash.new(0)
+  array.each do |i|
+    counter[i] += 1
+  end
+  mode_array = []
+  counter.each do |k, v|
+    if v == counter.values.max
+      mode_array << k
+    end
+  end
+  mode_array.sort
+
+end
+
+    @mode = mode(@numbers)
   end
 end
