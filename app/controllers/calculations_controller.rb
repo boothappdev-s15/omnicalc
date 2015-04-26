@@ -1,7 +1,7 @@
 class CalculationsController < ApplicationController
 
   def word_count
-    @text = params[:user_text]
+    @text = params[:user_text].chomp
     @special_word = params[:user_word]
 
     # ================================================================================
@@ -10,15 +10,44 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    # Start of Character count with spaces section
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    ch_count_w_spaces = @text.length
+    @character_count_with_spaces = ch_count_w_spaces.to_s
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    # End of Character count with spaces section
 
-    @word_count = "Replace this string with your answer."
 
-    @occurrences = "Replace this string with your answer."
+    # Start of character count without spaces section
+
+    inputed_text = @text.delete' '
+    ch_count_wo_spaces = inputed_text.length
+    @character_count_without_spaces = ch_count_wo_spaces.to_s
+
+    # End of character count without spaces section
+
+
+    # Word Count Section
+
+    w_count_text = @text.split.join(" ")
+    space_count_plus1 = w_count_text.scan(/ /).count + 1
+
+    @word_count = space_count_plus1.to_s
+
+    # End of word count Section
+
+
+    # Beginning of Special Word Count section
+
+    spec_word_clean = @special_word.downcase.to_s
+    spec_word_count = @text.downcase.scan(spec_word_clean).count
+    @occurrences =spec_word_count
+
+    # End of special word count section
+
   end
+
+
 
   def loan_payment
     @apr = params[:annual_percentage_rate].to_f
@@ -32,8 +61,19 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    monthly_ir = (@apr/12)/100
+    months_to_maturity = (@years * 12)
+    total_principal = @principal
+
+    numerator =monthly_ir * total_principal
+    denomentator = (1 - ((1+monthly_ir)**(0-months_to_maturity)))
+
+    payment_per_month = numerator/denomentator
+    @monthly_payment = payment_per_month
+
   end
+
+
 
   def time_between
     @starting = Chronic.parse(params[:starting_time])
@@ -48,13 +88,26 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    start_time = @starting
+    end_time = @ending
+    difference_in_time = end_time - start_time
+    difference_in_minutes = difference_in_time/60
+    difference_in_hours = difference_in_minutes/60
+    difference_in_days = difference_in_hours/24
+    difference_in_weeks = difference_in_days/7
+    difference_in_years = difference_in_weeks/52
+
+
+    @seconds = difference_in_time
+    @minutes = difference_in_minutes
+    @hours = difference_in_hours
+    @days = difference_in_days
+    @weeks = difference_in_weeks
+    @years = difference_in_years
   end
+
+
+
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
