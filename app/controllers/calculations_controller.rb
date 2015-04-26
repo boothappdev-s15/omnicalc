@@ -11,13 +11,15 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = (@text.length - @text.scan(/\s+/).count)
 
-    @word_count = "Replace this string with your answer."
 
-    @occurrences = "Replace this string with your answer."
+    @word_count = @text.split.length
+
+    @occurrences = (@text.split.length - @special_word.split.length)
+
   end
 
   def loan_payment
@@ -32,7 +34,19 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    # Principal - (Principal*apr) = Amount due left (amount_left)
+    # Next year: amount_left - (amount_left*apr) = amount_left (repeat until years = 0)
+    # We want to find out how much to pay so it's the mean of all the amount_left after # x number of years/12
+
+    amount_left = @principal - (@principal*@apr)
+    amount_left = amount_left - (amount_left*@apr)
+
+    While @years > 0
+
+    amount_left = @principal - (@principal*@apr)
+
+    @monthly_payment =
+
   end
 
   def time_between
