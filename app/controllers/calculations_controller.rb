@@ -83,13 +83,27 @@ end
 
     @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    even=@count%2
+    if even != 0
+        median= @numbers[(@count-1)/2]
+    else
+    if even == 0
+median = (@numbers[(@count+1)/2] + @numbers[(((@count+1)/2) -1)])/2
+end
+end
+    @median = median.to_i
 
-    @sum = "Replace this string with your answer."
 
-    @mean = "Replace this string with your answer."
+    sum=0
+    @numbers.each do |lion|
+        sum=sum+lion
+end
+
+    @sum = sum.to_i
+
+    @mean = (@sum/@count).round(2)
 
     @variance = "Replace this string with your answer."
 
