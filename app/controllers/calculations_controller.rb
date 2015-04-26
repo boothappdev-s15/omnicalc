@@ -92,25 +92,49 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
 
-    @count = "Replace this string with your answer."
 
-    @minimum = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @maximum = "Replace this string with your answer."
+    @count = @numbers.length
 
-    @range = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @median = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @sum = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @mean = "Replace this string with your answer."
+   def med (count,sorted)
+        if count%2 == 0
+           return (sorted[count/2]+sorted[count/2 - 1])/2
 
-    @variance = "Replace this string with your answer."
+        else
+           return sorted[count/2]
+        end
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @median = med(@count,@sorted_numbers)
+
+    @sum = @numbers.sum
+
+    @mean = @sum/@count
+
+    def var(numbers,mean,count)
+        total = 0
+        numbers.each do |diff|
+           sqdif =  (diff - mean)**2
+            total = total + sqdif
+        end
+        return total/count
+    end
+
+
+    @variance = var(@numbers,@mean,@count)
+
+
+    @standard_deviation = @variance**(1.0/2)
+
+
 
     @mode = "Replace this string with your answer."
   end
