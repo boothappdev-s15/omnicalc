@@ -11,13 +11,15 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.length-@text.count(' ')
 
-    @word_count = "Replace this string with your answer."
+    @word_count = (@text.split).length
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.scan(@special_word).length
+
+    #why didn't @text.count(@special_word) work? also tried that divided by @special_word.length
   end
 
   def loan_payment
