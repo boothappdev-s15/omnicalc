@@ -45,11 +45,11 @@ class CalculationsController < ApplicationController
 
     # End of special word count section
 
-  end
+end
 
 
 
-  def loan_payment
+def loan_payment
     @apr = params[:annual_percentage_rate].to_f
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
@@ -71,11 +71,11 @@ class CalculationsController < ApplicationController
     payment_per_month = numerator/denomentator
     @monthly_payment = payment_per_month
 
-  end
+end
 
 
 
-  def time_between
+def time_between
     @starting = Chronic.parse(params[:starting_time])
     @ending = Chronic.parse(params[:ending_time])
 
@@ -104,39 +104,65 @@ class CalculationsController < ApplicationController
     @days = difference_in_days
     @weeks = difference_in_weeks
     @years = difference_in_years
-  end
+end
 
 
 
 
-  def descriptive_statistics
-    @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
+def descriptive_statistics
+    @numbers = params[:list_of_numbers].gsub(',','').split.map(&:to_f)
 
     # ================================================================================
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    #sorted_numbers_array = []
+    #sorted_numbers_array =
 
-    @count = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort { |x,y| x <=> y }
 
-    @minimum = "Replace this string with your answer."
+    list_length = @numbers.length
 
-    @maximum = "Replace this string with your answer."
+    @count = list_length
 
-    @range = "Replace this string with your answer."
+    @minimum = @numbers.sort { |x,y| x <=> y }[0]
 
-    @median = "Replace this string with your answer."
+    @maximum = @numbers.sort { |x,y| x <=> y }[list_length-1]
 
-    @sum = "Replace this string with your answer."
+    @range = @numbers.sort { |x,y| x <=> y }[list_length-1] - @numbers.sort { |x,y| x <=> y }[0]
 
-    @mean = "Replace this string with your answer."
 
-    @variance = "Replace this string with your answer."
 
-    @standard_deviation = "Replace this string with your answer."
+    if list_length%2 == 0
+        median_of_list = @numbers.sort { |x,y| x <=> y }[(list_length/2)-1] + @numbers.sort { |x,y| x <=> y }[list_length/2]
+    else
+        median_of_list = @numbers.sort { |x,y| x <=> y }[(list_length/2.0)-0.5]
+    end
 
-    @mode = "Replace this string with your answer."
-  end
+    @median = median_of_list
+
+    sum_of_numbers = 0
+    @numbers.each{|a| sum_of_numbers+=a}
+
+    @sum = sum_of_numbers
+
+    mean_of_list = sum_of_numbers/list_length
+    @mean = mean_of_list
+
+    variance_sum_of_list=0
+    @numbers.each{|a| variance_sum_of_list+=((a-mean_of_list)**2)}
+    variance_of_list = variance_sum_of_list/(@numbers.length-1)
+
+    @variance = variance_of_list
+
+    @standard_deviation = variance_of_list**(0.5)
+
+   # @mode = mode
+
+  #  def mode
+   #     @numbers{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]
+    #end
+
+end
 end
