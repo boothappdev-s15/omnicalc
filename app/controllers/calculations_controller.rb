@@ -81,7 +81,7 @@ class CalculationsController < ApplicationController
 
     @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
     @median = @count % 2 == 1 ? @sorted_numbers[@count/2] : (@sorted_numbers[@count/2 - 1] + @sorted_numbers[@count/2]).to_f / 2
 
@@ -93,6 +93,6 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = "Replace this string with your answer."
 
-    @mode = "Replace this string with your answer."
+    @mode = @numbers.max_by {|x| @numbers.count(x)}
   end
 end
