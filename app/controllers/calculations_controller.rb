@@ -83,15 +83,20 @@ class CalculationsController < ApplicationController
 
     @range = @maximum - @minimum
 
-    @median = @count % 2 == 1 ? @sorted_numbers[@count/2] : (@sorted_numbers[@count/2 - 1] + @sorted_numbers[@count/2]).to_f / 2
+    @median =
+    if @count % 2 == 1
+        @sorted_numbers[@count/2]
+    else(@sorted_numbers[@count/2 - 1] + @sorted_numbers[@count/2]).to_f / 2
+    end
 
     @sum = @numbers.inject(:+)
 
     @mean = @sum.to_f / @count
 
-    @variance = "Replace this string with your answer."
+    sum_variance = @numbers.inject(0){|x, i| x + (i - @mean) **2 }
+    @variance = sum_variance/@count
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = Math.sqrt(@variance)
 
     @mode = @numbers.max_by {|x| @numbers.count(x)}
   end
