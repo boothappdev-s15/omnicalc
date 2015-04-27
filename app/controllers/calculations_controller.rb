@@ -29,6 +29,8 @@ class CalculationsController < ApplicationController
              tally = tally + 1
         elsif count == spec + '?'
              tally = tally + 1
+        elsif count == spec + ','
+             tally = tally + 1
         end
       end
 
@@ -139,6 +141,27 @@ class CalculationsController < ApplicationController
 
 
 
-    @mode = "Replace this string with your answer."
+def mode(numbers)
+    newlist = Hash.new(0)
+
+    numbers.each do |i|
+      newlist[i] += 1
+    end
+
+    modereturn = []
+
+    newlist.each do |k,v|
+      if v == newlist.values.max
+        modereturn.push k
+      end
+    end
+
+
+    return modereturn[0]
+
+end
+
+    @mode = mode(@numbers)
   end
+
 end
