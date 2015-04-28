@@ -11,13 +11,13 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = @text.length
+    @character_count_with_spaces = "Replace this string with your answer."
 
-    @character_count_without_spaces = @text.length - @text.count(' ')
+    @character_count_without_spaces = "Replace this string with your answer."
 
-    @word_count = @text.split.size
+    @word_count = "Replace this string with your answer."
 
-    @occurrences = @text.count('@special_word')
+    @occurrences = "Replace this string with your answer."
   end
 
   def loan_payment
@@ -31,8 +31,13 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
+<<<<<<< HEAD
 #rate*PV / (1-(1+rate)^-n)
     @monthly_payment = (@apr/100/12*@principal)/(1-((1+@apr/100/12)**(@years*-12)))
+=======
+
+    @monthly_payment = "Replace this string with your answer."
+>>>>>>> parent of ae63699... homework attempt 1
   end
 
   def time_between
@@ -48,12 +53,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = @ending-@starting
-    @minutes = @seconds/ 60
-    @hours = @minutes/60
-    @days = @hours/24
-    @weeks = @days/7
-    @years = @weeks/52
+    @seconds = "Replace this string with your answer."
+    @minutes = "Replace this string with your answer."
+    @hours = "Replace this string with your answer."
+    @days = "Replace this string with your answer."
+    @weeks = "Replace this string with your answer."
+    @years = "Replace this string with your answer."
   end
 
   def descriptive_statistics
@@ -64,21 +69,21 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = @numbers.sort
+    @sorted_numbers = "Replace this string with your answer."
 
-    @count = @numbers.count
+    @count = "Replace this string with your answer."
 
-    @minimum = @sorted_numbers[0]
+    @minimum = "Replace this string with your answer."
 
-    @maximum = @sorted_numbers.reverse[0]
+    @maximum = "Replace this string with your answer."
 
-    @range = @sorted_numbers.reverse[0]-@sorted_numbers[0]
+    @range = "Replace this string with your answer."
 
     @median = "Replace this string with your answer."
 
-    @sum = @sorted_numbers.sum
+    @sum = "Replace this string with your answer."
 
-    @mean = @sum/@count
+    @mean = "Replace this string with your answer."
 
     @variance = "Replace this string with your answer."
 
