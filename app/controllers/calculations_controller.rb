@@ -31,7 +31,6 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
-
 #rate*PV / (1-(1+rate)^-n)
     @monthly_payment = (@apr/100/12*@principal)/(1-((1+@apr/100/12)**(@years*-12)))
   end
@@ -50,7 +49,7 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
     @seconds = @ending-@starting
-    @minutes = @seconds/60
+    @minutes = @seconds/ 60
     @hours = @minutes/60
     @days = @hours/24
     @weeks = @days/7
@@ -60,31 +59,30 @@ class CalculationsController < ApplicationController
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
+
+
     # ================================================================================
     # Your code goes below.
-    # The numbers the user inputs are in the array @numbers.
+    # The numbers the user input are in the array @numbers.
     # ================================================================================
-
 
     @sorted_numbers = @numbers.sort
 
     @count = @numbers.count
 
-    @minimum = @numbers.min
+    @minimum = @sorted_numbers[0]
 
-    @maximum = @numbers.max
+    @maximum = @sorted_numbers.reverse[0]
 
-    @range = @minimum, @maximum
+    @range = @sorted_numbers.reverse[0]-@sorted_numbers[0]
 
-    @median = @numbers.sum/2
+    @median = "Replace this string with your answer."
 
-    @sum = @numbers.sum
+    @sum = @sorted_numbers.sum
 
-    @mean =@sum/@count
+    @mean = @sum/@count
 
-    @squared_difference = "Replace this string with your answer."
-
-    @variance = @squared_difference/(@numbers.count-1)
+    @variance = 0
 
     @standard_deviation = @variance**1/2
 
