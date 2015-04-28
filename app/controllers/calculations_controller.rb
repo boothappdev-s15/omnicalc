@@ -90,7 +90,7 @@ end
         median= @sorted_numbers[(@count-1)/2]
     else
     if even == 0
-median = ((@sorted_numbers[(@count+1)/2] + @sorted_numbers[(((@count+1)/2) -1)])/2).round(2)
+median = ((@sorted_numbers[@count/2] + @sorted_numbers[((@count/2)-1)])/2).round(2)
 end
 end
     @median = median.to_f
