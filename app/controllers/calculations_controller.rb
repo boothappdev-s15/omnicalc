@@ -17,10 +17,7 @@ class CalculationsController < ApplicationController
 
     @word_count = (@text.strip.gsub("  "," ").count " ")+1
 
-    #a = "/#{@special_word}/"
-
     @occurrences = @text.downcase.scan("#{@special_word}").length
-    #@text.downcase.scan("/#{@special_word}/").length
 
   end
 
@@ -36,7 +33,9 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+
+
+    @monthly_payment = ((@apr/1200)*@principal)/(1-(1+@apr/1200)**(-1*@years*12))
   end
 
   def time_between
