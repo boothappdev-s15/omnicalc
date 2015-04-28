@@ -56,16 +56,23 @@ class CalculationsController < ApplicationController
 
 
 
-    @seconds = time.to_f % 60
-    mintime = (time - @seconds.to_f)/60
-    @minutes = mintime % 60
-    hourtime = (mintime - @minutes)/60
-    @hours = hourtime % 24
-    daytime = (hourtime - @hours)/24
-    @days = daytime % 7
-    weektime = (daytime - @days)/7
-    @weeks = weektime % 52
-    @years = (weektime - @weeks) / 52
+    # @seconds = time.to_f % 60
+    # mintime = (time - @seconds.to_f)/60
+    # @minutes = mintime % 60
+    # hourtime = (mintime - @minutes)/60
+    # @hours = hourtime % 24
+    # daytime = (hourtime - @hours)/24
+    # @days = daytime % 7
+    # weektime = (daytime - @days)/7
+    # @weeks = weektime % 52
+    # @years = (weektime - @weeks) / 52
+
+    @seconds = time.to_f
+    @minutes = time.to_f/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
   end
 
   def descriptive_statistics
