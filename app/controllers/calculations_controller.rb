@@ -32,7 +32,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 #rate*PV / (1-(1+rate)^-n)
-    @monthly_payment = (@apr/12*@principal)/(1-((1+@apr/12)**(@years*-12)))
+    @monthly_payment = (@apr/100/12*@principal)/(1-((1+@apr/100/12)**(@years*-12)))
   end
 
   def time_between
@@ -82,7 +82,7 @@ class CalculationsController < ApplicationController
 
     @variance = "Replace this string with your answer."
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = @variance**1/2
 
     @mode = "Replace this string with your answer."
   end
