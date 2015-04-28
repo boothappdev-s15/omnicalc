@@ -34,7 +34,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = ((@apr*@principal)/(1-(1+@apr)**(@years*-1)))/12
   end
 
   def time_between
@@ -50,12 +50,14 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = (@starting-@ending).abs
+    @minutes = @seconds/60
+    @hours = (@minutes/60).round(2)
+    @days = (@hours/24).round(2)
+    @weeks = (@days/7).round(2)
+    @years = (@weeks.to_f/52).round(2)
+
+    #how to best format numbers, sprintf? but converts to string. possible to display one way andread another?
   end
 
   def descriptive_statistics
