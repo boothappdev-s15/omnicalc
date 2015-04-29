@@ -10,14 +10,28 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    spaces=@text.count " "
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.length-spaces
 
-    @word_count = "Replace this string with your answer."
+    @word_count = spaces+1
 
-    @occurrences = "Replace this string with your answer."
+
+
+    text_words = @text.downcase.scan(/\w+/)  #get an array of lower case words
+    search_word=@special_word.downcase
+    text_count = 0
+
+    text_words.each do |the_number|
+        text_count = (text_words == search_word)? 1:0 + text_count
+    end
+    @occurrences = text_count
+
+
+    #(firm.inflection_point ? 1 : 0)
+
   end
 
   def loan_payment
@@ -32,7 +46,8 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    payment = (@apr/1200 * @principal) / ( 1 - ((1 + @apr/1200)**(-@years*12)))
+    @monthly_payment = payment
   end
 
   def time_between
@@ -48,12 +63,16 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    #starting_seconds = @starting.year*31536000 + @starting.yday*86400 + @starting.hour*3600 + @starting.min*60 + @starting.sec
+    #ending_seconds = @ending.year*31536000 + @ending.yday*86400 + @ending.hour*3600 + @ending.min*60 + @ending.sec
+    result_seconds = @ending - @starting
+
+    @seconds = result_seconds
+    @minutes = result_seconds / 60
+    @hours = result_seconds / 60 / 60
+    @days = result_seconds / 60 / 60 / 24
+    @weeks = result_seconds / 60 / 60 / 24 / 7
+    @years = result_seconds / 60 / 60 / 24 / 365.25
   end
 
   def descriptive_statistics
@@ -64,26 +83,45 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @numbers.max - @numbers.min
 
-    @median = "Replace this string with your answer."
 
-    @sum = "Replace this string with your answer."
+    numbers_length=@numbers.count
 
-    @mean = "Replace this string with your answer."
+    if numbers_length%2 != 1
+        @median = (@numbers.sort[numbers_length/2-1] + @numbers.sort[numbers_length/2])/2
+    else
+        @median = @numbers.sort[numbers_length/2]
+    end
 
-    @variance = "Replace this string with your answer."
 
-    @standard_deviation = "Replace this string with your answer."
+    @sum = @numbers.inject(:+)
 
-    @mode = "Replace this string with your answer."
+    @mean = @numbers.inject(:+) / @numbers.count
+
+
+    mean_of_list = @numbers.inject(:+) / @numbers.count
+    variance_sum_of_list=0
+    @numbers.each{|a| variance_sum_of_list+=((a-mean_of_list)**2)}
+    variance_of_list = variance_sum_of_list/(@numbers.length)
+    @variance = variance_of_list
+
+    @standard_deviation = Math.sqrt(variance_of_list)
+
+
+    def mode(mode)
+      mode_return = mode.inject({}) { |k, v| k[v] = mode.count(v); k }
+      mode_return.select { |k,v| v == mode_return.values.max }.keys
+    end
+    @mode = mode(@numbers)
+
   end
 end
