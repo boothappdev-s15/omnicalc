@@ -13,7 +13,7 @@ class CalculationsController < ApplicationController
 
     @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = @text.split.join.length
+    @character_count_without_spaces = @text.delete( " ").length
 
     counts = Hash.new 0
 
@@ -78,16 +78,37 @@ end
 
     @range = @maximum - @minimum
 
-    @median =
+    def median
+        sorted = @numbers.sort
+        middle = (sorted.length - 1) / 2.0
+        (sorted[middle.floor] + sorted[middle.ceil]) / 2.0
+    end
+
+    @median = median
 
     @sum = @numbers.sum
 
     @mean = @numbers.sum / @count
 
-    @variance = "Replace this string with your answer."
+    def variance
+        c = 0
+        @numbers.each do |chido|
+                acum = (chido - @mean)**2
+                c = c + acum
+        end
+        variance=c/@count
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @variance = variance
 
-    @mode = "Replace this string with your answer."
+    @standard_deviation = @variance ** 0.5
+
+    def mode
+        vec = @numbers
+        libre = vec.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+        vec.max_by { |v| libre[v] }
+    end
+
+    @mode = mode
   end
 end
