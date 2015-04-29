@@ -99,6 +99,10 @@ class CalculationsController < ApplicationController
 
     @maximum = @numbers.max
 
+    if @numbers.count == 0
+        return
+    end
+
     @range = @maximum - @minimum
 
     @median = ( @sorted_numbers[(@numbers.count - 1 ) / 2 ] + @sorted_numbers[@numbers.count / 2] ) / 2
@@ -146,7 +150,14 @@ class CalculationsController < ApplicationController
             k +=1
         end
 
-    @mode = @output.compact.inspect
+        if @count_mode.max == 1
+            @mode_calc = "nil"
+        else
+            @mode_calc = @output.compact.inspect
+
+        end
+
+    @mode = @mode_calc
 
   end
 end
