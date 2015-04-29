@@ -34,19 +34,14 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    # Principal - (Principal*apr) = Amount due left (amount_left)
-    # Next year: amount_left - (amount_left*apr) = amount_left (repeat until years = 0)
-    # We want to find out how much to pay so it's the mean of all the amount_left after # x number of years/12
+    # Principal + (Principal*apr) = Amount due left (amount_due)
+    # Next year: amount_due + (amount_due*apr) = amount_due (repeat until years = 0)
+    # We want to find out how much to pay so it's the total of the last year's amount left/12
 
-    amount_left = @principal - (@principal*@apr)
-    amount_left = amount_left - (amount_left*@apr)
+    rate = (@apr/100) / (@years*12)
+    number_of_years = @years*12
 
-    While @years > 0
-
-    amount_left = @principal - (@principal*@apr)
-
-    @monthly_payment =
-
+    @monthly_payment = (rate*@principal)/(1-(1+rate)**(-(number_of_years)))
   end
 
   def time_between
@@ -62,12 +57,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = (@ending - @starting)/60
+    @hours = (@ending - @starting)/3600
+    @days = (@ending - @starting)/86400
+    @weeks = (@ending - @starting)/604800
+    @years = (@ending - @starting)/31449600
   end
 
   def descriptive_statistics
@@ -78,26 +73,69 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @numbers.max - @numbers.min
 
-    @median = "Replace this string with your answer."
+    sorted = @numbers.sort
+    length = sorted.length
 
-    @sum = "Replace this string with your answer."
+    @median = (sorted[(length - 1) / 2] + sorted[length / 2]) / 2.0
 
-    @mean = "Replace this string with your answer."
+    running_total = 0
+        @numbers.each do |number|
+            running_total = running_total + number
+        end
+    @sum = running_total
 
-    @variance = "Replace this string with your answer."
 
-    @standard_deviation = "Replace this string with your answer."
+    running_total = 0
+    @numbers.each do |number|
+      running_total = running_total + number
+    end
+    mean = running_total/@numbers.length
+    @mean = mean
 
-    @mode = "Replace this string with your answer."
+    running_total = 0
+    @numbers.each do |number|
+      running_total = running_total + number
+    end
+    mean = running_total/@numbers.length
+    diff = []
+    @numbers.each do |x|
+      diff.push (x - mean)**2
+      end
+    total = 0
+    diff.each do |y|
+      total = total + y
+    end
+    var = total/diff.length
+    @variance = var
+
+       running_total = 0
+    @numbers.each do |number|
+      running_total = running_total + number
+    end
+    mean = running_total/@numbers.length
+    diff = []
+    @numbers.each do |x|
+      diff.push (x - mean)**2
+      end
+    total = 0
+    diff.each do |y|
+      total = total + y
+    end
+    var = total/diff.length
+    stdv = Math.sqrt(var)
+    @standard_deviation = stdv
+
+    most_frequent_item = @numbers.uniq.max_by{ |i| @numbers.count(i)}
+    @mode = most_frequent_item
   end
 end
