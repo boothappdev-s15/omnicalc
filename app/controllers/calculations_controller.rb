@@ -30,6 +30,8 @@ class CalculationsController < ApplicationController
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
 
+    @apr_percent = @apr / 100
+
     # ================================================================================
     # Your code goes below.
     # The annual percentage rate the user input is in the decimal @apr.
@@ -37,7 +39,8 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = (@apr_percent + @apr_percent/((1 + @apr_percent) ** ((@years * 12) - 1))) * @principal
+
   end
 
   def time_between
@@ -53,12 +56,31 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+
+    @time = @ending - @starting
+
+    @years = @time.to_i / 31449600
+
+        @time = @time - @years * 31449600
+
+    @weeks = @time.to_i / 604800
+
+        @time = @time - @weeks * 604800
+
+    @days = @time.to_i / 86400
+
+        @time = @time - @days * 86400
+
+    @hours = @time.to_i / 3600
+
+        @time = @time - @hours * 3600
+
+    @minutes = @time.to_i / 60
+
+        @time = @time - @minutes * 60
+
+    @seconds = @time
+
   end
 
   def descriptive_statistics
@@ -69,26 +91,62 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    @median = ( @sorted_numbers[(@numbers.count - 1 ) / 2 ] + @sorted_numbers[@numbers.count / 2] ) / 2
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @numbers.sum / @numbers.count
 
-    @variance = "Replace this string with your answer."
+        @diff = 0
+        @sqdiff = 0
+        @diffs = []
+        @diffs_total = 0
+        @var_total = 0
 
-    @standard_deviation = "Replace this string with your answer."
+        @numbers.each do |number|
+            @diff = @mean - number
+            @sqdiff = @diff * @diff
+            @diffs.push(@sqdiff)
+        end
 
-    @mode = "Replace this string with your answer."
+        @diffs.each do |number|
+            @diffs_total = @diffs_total + number
+            @var_total = @diffs_total / @diffs.length
+        end
+
+    @variance = @var_total
+
+    @standard_deviation = Math.sqrt(@var_total)
+
+        @count_mode = []
+        @uniq_numbers = @numbers.uniq
+        @output = []
+
+        j = 0
+
+        @uniq_numbers.each do |number|
+            @count_mode[j] = @numbers.count(number)
+            j += 1
+        end
+
+        k = 0
+
+        @count_mode.each do |number|
+            @output[k] = @uniq_numbers[k] if number == @count_mode.max
+            k +=1
+        end
+
+    @mode = @output.compact.inspect
+
   end
 end
