@@ -62,7 +62,7 @@ class CalculationsController < ApplicationController
     @days = (@ending - @starting)/(60*60*24)
     @weeks = (@ending - @starting)/(60*60*24*7)
     @months = (@ending -@starting)/(60*60*24*7*(52/12))
-    @years = (@ending - @starting)/(60*60*24*7*52)
+    @years = (@ending - @starting)/(60*60*24*365.25)
 
   end
 
@@ -83,6 +83,19 @@ class CalculationsController < ApplicationController
     @maximum = @numbers.max
 
     @range = @numbers.max - @numbers.min
+
+    array_length = @sorted_numbers.length
+
+    @median = nil
+    second_middle_idx = array_length/2
+    second_middle_num = @sorted_numbers[second_middle_idx]
+    if @sorted_numbers.length.even?
+        first_middle_idx = array_length/2 - 1
+        first_middle_num = @sorted_numbers[first_middle_idx]
+        @median = (first_middle_num + second_middle_num) / 2.0
+    else
+        @median = second_middle_num
+    end
 
     @median = (@sorted_numbers[((@sorted_numbers.length - 1) / 2)] + @sorted_numbers[((@sorted_numbers.length) / 2)]) / 2.0
 
@@ -111,8 +124,15 @@ class CalculationsController < ApplicationController
         end
       end
 
+      # if @mode_array.count > 1
+      #   @mode = @mode_array
+      # else
+      #   @mode = @mode_array.first
+      # end
+      # this code produces the same results as the line below
+      @mode = @mode_array.count > 1 ? @mode_array : @mode_array.first
 
-    @mode = @mode_array
+      # @mode = @numbers.mode
 
   end
 end
