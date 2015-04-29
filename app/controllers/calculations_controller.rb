@@ -87,7 +87,7 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
     @count = @numbers.count
 
@@ -98,17 +98,30 @@ class CalculationsController < ApplicationController
     range = @numbers.max-@numbers.min
     @range = range
 
-    @median = "Replace this string with your answer."
+    # def median(@numbers)
+      sorted = @numbers.sort
+      len = sorted.length
+      median = (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+    # end
+
+    @median = median
 
     @sum = @numbers.sum
 
     mean = @numbers.sum/@numbers.count
     @mean = mean
 
-    @variance = "Replace this string with your answer."
+    new_numbers = []
+    @numbers.each do |the_number|
+    new_numbers.push ((the_number - @mean)**2)
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @variance = new_numbers.sum/new_numbers.count
 
-    @mode = "Replace this string with your answer."
+    @standard_deviation = Math.sqrt(@variance)
+
+    freq = @numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    @mode = @numbers.max_by { |v| freq[v] }
+
   end
 end
