@@ -79,14 +79,69 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = (@ending - @starting)
-    @minutes = @seconds/60
-    @hours = @minutes/60
-    @days = @hours/24
-    @weeks = @days/7
-    @months = @weeks/4
-    @years = @weeks/52
+     def seconds(starting,ending)
+       if starting == nil
+         return ''
+       else
+         return ending - starting
+       end
+     end
+
+     @seconds = seconds(@starting,@ending)
+
+     def minutes(seconds)
+       if seconds ==''
+         return ''
+       else
+         return seconds/60
+       end
+     end
+
+     @minutes = minutes(@seconds)
+
+       def hours(minutes)
+       if minutes ==''
+         return ''
+       else
+         return minutes/60
+       end
+     end
+
+     @hours = hours(@minutes)
+
+       def days(hours)
+       if hours ==''
+         return ''
+       else
+         return hours/24
+       end
+     end
+
+     @days = days(@hours)
+
+       def weeks(days)
+       if days ==''
+         return ''
+       else
+         return days/7
+       end
+     end
+
+     @weeks = weeks(@days)
+
+       def years(weeks)
+       if weeks ==''
+         return ''
+       else
+         return weeks/52
+       end
+     end
+
+
+     @years = years(@weeks)
+
   end
+
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
@@ -106,37 +161,75 @@ class CalculationsController < ApplicationController
 
     @maximum = @numbers.max
 
-    @range = @maximum - @minimum
+
+    def range(max,min,count)
+      if count == 0
+        return ''
+      else
+        return max - min
+      end
+    end
+
+    @range = range(@maximum,@minimum,@count)
 
    def med (count,sorted)
-        if count%2 == 0
-           return (sorted[count/2]+sorted[count/2 - 1])/2
-
-        else
-           return sorted[count/2]
-        end
+      if @count==0
+        return ''
+      elsif count%2 == 0
+         return (sorted[count/2]+sorted[count/2 - 1])/2
+      else
+         return sorted[count/2]
+      end
     end
 
     @median = med(@count,@sorted_numbers)
 
-    @sum = @numbers.sum
+    def sum(numbers,count)
+      if count == 0
+        return ''
+      else
+        return numbers.sum
+      end
+    end
 
-    @mean = @sum/@count
+    @sum = sum(@numbers,@count)
+
+    def mean(sum,count)
+      if count == 0
+        return ''
+      else
+        return sum/count
+      end
+    end
+
+
+    @mean = mean(@sum,@count)
 
     def var(numbers,mean,count)
+      if count == 0
+        return ''
+      else
         total = 0
         numbers.each do |diff|
            sqdif =  (diff - mean)**2
             total = total + sqdif
         end
         return total/count
+      end
     end
 
 
     @variance = var(@numbers,@mean,@count)
 
+    def stdev(variance,count)
+      if count == 0
+        return ''
+      else
+        return variance**(1.0/2)
+      end
+    end
 
-    @standard_deviation = @variance**(1.0/2)
+    @standard_deviation = stdev(@variance,@count)
 
 
 
