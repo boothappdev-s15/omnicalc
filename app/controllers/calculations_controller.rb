@@ -63,11 +63,25 @@ class CalculationsController < ApplicationController
     @years = @weeks/52
   end
 
-  def descriptive_statistics
+    def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
+        @sorted=[]
+            sorted = @sorted_numbers
+            len= @sorted.length
+            @median =((sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0)
 
+        @var_ary=[]
+            variance=@numbers
+            var_ary.push((sq_mean - @mean) ** 2)
+            sum_variance= var_ary.sum
+            @variance= (@sum_variance/@count)
 
-
+        @mode= []
+            mode= @numbers
+            count=Hash.new(0)
+            numbers.each {|number| count[number] +=1}
+            count.sort_by { |k,v| v }.last
+    end
     # ================================================================================
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
@@ -83,13 +97,13 @@ class CalculationsController < ApplicationController
 
     @range = @sorted_numbers.reverse[0]-@sorted_numbers[0]
 
-    @median = "Replace this string with your answer."
+    @median = @sorted
 
     @sum = @sorted_numbers.sum
 
     @mean = @sum/@count
 
-    @variance = 0
+    @variance = @var_ary
 
     @standard_deviation = @variance**1/2
 
