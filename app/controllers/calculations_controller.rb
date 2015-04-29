@@ -105,23 +105,14 @@ end
 
     @standard_deviation = Math.sqrt(@variance)
 
-    my_numbers = @numbers.split(" ")
-    my_mode = []
-    my_numbers.each do |number|
-        if number << 1
-        my_mode.push("a")
-    end
-
-    @mode = my_mode.count
-
-
+    #my_numbers = @numbers.split(" ")
+    #my_mode = []
+    #my_numbers.each do |number|
+     #   if number << 1
+      #  my_mode.push("a")
+    #end
+#end
+    @mode = @numbers #my_mode.count
     end
 end
-    my_words = @text.split(" ")
-    matched_words = []
-    my_words.each do |word|
-        if word == @special_word
-            matched_words.push("a")
-        end
-    end
-    @occurrences = matched_words.count
+
