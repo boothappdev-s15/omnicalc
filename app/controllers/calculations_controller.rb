@@ -98,10 +98,13 @@ class CalculationsController < ApplicationController
 
     @mean = DescriptiveStatistics.mean(@numbers)
 
-    @variance = DescriptiveStatistics.variance(@numbers)
+    @variance = DescriptiveStatistics.population_variance(@numbers)
 
-    @standard_deviation = DescriptiveStatistics.standard_deviation(@numbers)
+    @standard_deviation = DescriptiveStatistics.population_standard_deviation(@numbers)
 
     @mode = DescriptiveStatistics.mode(@numbers)
+     @variance2 = DescriptiveStatistics.variance(@numbers)
+
+    @standard_deviation2 = DescriptiveStatistics.standard_deviation(@numbers)
   end
 end
