@@ -84,7 +84,7 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = @numbers.sort!
+    @sorted_numbers = @numbers
 
     @count = @numbers.length
 
