@@ -21,18 +21,13 @@ class CalculationsController < ApplicationController
     my_words = @text.split(" ")
     matched_words = []
     my_words.each do |word|
-        if word = @special_word
-            matched_words.push
+        if word == @special_word
+            matched_words.push("a")
         end
-
-    @occurrences = matched_words.count
     end
-end
+    @occurrences = matched_words.count
 
-    #new_numbers = []
-    #@numbers.each do |number|
-    #    new_numbers.push((number - @mean)**2)
-    #end
+end
 
   def loan_payment
     @apr = params[:annual_percentage_rate].to_f
@@ -110,7 +105,23 @@ end
 
     @standard_deviation = Math.sqrt(@variance)
 
-    #@mode = @numbers.split(" ").mode
+    my_numbers = @numbers.split(" ")
+    my_mode = []
+    my_numbers.each do |number|
+        if number << 1
+        my_mode.push("a")
+    end
+
+    @mode = my_mode.count
+
 
     end
 end
+    my_words = @text.split(" ")
+    matched_words = []
+    my_words.each do |word|
+        if word == @special_word
+            matched_words.push("a")
+        end
+    end
+    @occurrences = matched_words.count
