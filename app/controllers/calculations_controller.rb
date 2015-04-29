@@ -24,8 +24,8 @@ class CalculationsController < ApplicationController
     search_word=@special_word.downcase
     text_count = 0
 
-    text_words.each do |the_number|
-        text_count = (text_words == search_word)? 1:0 + text_count
+    text_words.each do |word|
+        text_count += (word == search_word) ? 1 : 0
     end
     @occurrences = text_count
 
