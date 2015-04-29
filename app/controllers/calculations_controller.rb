@@ -18,20 +18,17 @@ class CalculationsController < ApplicationController
 
     @word_count = @text.split(" ").count
 
-
-@occurrences = "Replace this string with your answer."
-
-
-
     my_words = @text.split(" ")
     matched_words = []
     my_words.each do |word|
         if word = @special_word
            matched_words.push
-           # use @word_count to count the # of special words?
-           end
         end
     end
+
+    @occurrences = matched_words.length
+
+end
 
   def loan_payment
     @apr = params[:annual_percentage_rate].to_f
@@ -45,16 +42,14 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
+        apr_decimal = @apr/100/12
+        num = apr_decimal * @principal
+        months = @years * -12
+        den = 1 - ((1+apr_decimal) ** months)
+        @loan_payment = num / den
 
-    @monthly_payment =""
-        #apr_decimal = @apr/100/12
-        #num = apr_decimal * @principal
-        #months = @years / -12
-        #den = 1 - (1+apr_decimal) ** months
-        #@loan_payment = num / den
-
-
-  end
+    @monthly_payment = @loan_payment
+end
 
   def time_between
     @starting = Chronic.parse(params[:starting_time])
@@ -108,8 +103,9 @@ class CalculationsController < ApplicationController
 
     @variance = new_numbers.sum/new_numbers.count
 
-    #@standard_deviation = @variance.sqrt
+   # @standard_deviation =
 
-    @mode = "Replace this string with your answer."
-  end
+    #@mode = @numbers.split(" ").mode
+
+    end
 end
