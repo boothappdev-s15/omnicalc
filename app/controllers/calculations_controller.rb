@@ -16,21 +16,20 @@ class CalculationsController < ApplicationController
 
     @word_count = @text.split(' ').length
 
-   def counter(wrds, spec)
-       list = wrds.downcase.split(' ')
+    def counter(wrds, special_word)
+      downcased_special_word = special_word.downcase
+      stripped_words = wrds.scan(/[a-zA-z \d]/).join
 
-       tally = 0
-       list.each do |count|
-        if count == spec
+      list_of_words = stripped_words.downcase.split(' ')
+
+      tally = 0
+      list_of_words.each do |word|
+        # logic to tally or not tally
+        # tally if word matches special word
+        # tally = tally + 1
+
+        if word == special_word
           tally = tally + 1
-        elsif count == spec + '!'
-            tally = tally + 1
-        elsif count == spec + '.'
-             tally = tally + 1
-        elsif count == spec + '?'
-             tally = tally + 1
-        elsif count == spec + ','
-             tally = tally + 1
         end
       end
 
