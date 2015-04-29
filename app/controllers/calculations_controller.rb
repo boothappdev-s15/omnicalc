@@ -3,6 +3,13 @@ class CalculationsController < ApplicationController
   def word_count
     @text = params[:user_text]
     @special_word = params[:user_word]
+    my_words = @text.split(" ")
+    matched_words = [ ]
+    my_words.each do |word|
+    if word == @special_word
+         matched_words.push ("a")
+    end
+  end
 
     # ================================================================================
     # Your code goes below.
@@ -17,7 +24,7 @@ class CalculationsController < ApplicationController
 
     @word_count = @text.split.size
 
-    @occurrences = @text.count('@special_word')
+    @occurrences = matched_words.count
   end
 
   def loan_payment
