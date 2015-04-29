@@ -103,8 +103,8 @@ class CalculationsController < ApplicationController
     @standard_deviation = DescriptiveStatistics.population_standard_deviation(@numbers)
 
     @mode = DescriptiveStatistics.mode(@numbers)
-    @variance2 = DescriptiveStatistics.variance(@numbers)
+    # @variance2 = DescriptiveStatistics.variance(@numbers)
 
-    @standard_deviation2 = DescriptiveStatistics.standard_deviation(@numbers)
+    # @standard_deviation2 = DescriptiveStatistics.standard_deviation(@numbers)
   end
 end
