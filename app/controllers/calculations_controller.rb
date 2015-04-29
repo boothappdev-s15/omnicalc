@@ -17,7 +17,7 @@ class CalculationsController < ApplicationController
 
     @word_count = (@text.strip.gsub("  "," ").count " ")+1
 
-    @occurrences = @text.downcase.scan("#{@special_word}").length
+    @occurrences = @text.downcase.scan(" #{@special_word} ").length
 
   end
 
