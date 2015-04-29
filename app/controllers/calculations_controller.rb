@@ -11,13 +11,24 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = (@text.length)-(@text.count(" "))
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split(" ").count
 
-    @occurrences = "Replace this string with your answer."
+    @all_words = @text.split(" ")
+
+    @matched_words = []
+
+    @all_words.each do |word|
+        if word.downcase == @special_word.downcase
+            @matched_words.push(word)
+        end
+    end
+
+    @occurrences = @matched_words.count
+
   end
 
   def loan_payment
@@ -32,7 +43,13 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @r = ((@apr/100) / 12)
+
+    @payments = (12 * @years)
+    @expo = ((1 + @r)**@payments)
+    @denominator = (@expo - 1)
+    @numerator = (@principal * (@expo * @r))
+    @monthly_payment = (@numerator / @denominator) #"Replace this string with your answer."
   end
 
   def time_between
@@ -48,12 +65,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60
+    @hours = @minutes / 60
+    @days = @hours / 24
+    @weeks = @days / 7
+    @years = @days / 365
   end
 
   def descriptive_statistics
@@ -64,26 +81,58 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range_calc = []
 
-    @median = "Replace this string with your answer."
+    @numbers.each do |range|
+        if range == @numbers.min
+        elsif range == @numbers.max
+            @range_calc.push(range)
+        end
+    end
 
-    @sum = "Replace this string with your answer."
+    @range = @range_calc
 
-    @mean = "Replace this string with your answer."
+    median_sorted = @numbers.sort
+    list = sorted.length
+        if list %2 != 0
+        @median = sorted[list/2]
+        else
+        @median = (sorted[list/2]+sorted[(list/2)-1])/2.0
+        end
 
-    @variance = "Replace this string with your answer."
+    @median = @median
 
-    @standard_deviation = "Replace this string with your answer."
+    running_total = 0
+    @numbers.each do |number|
+        running_total = running_total + number
+        end
 
-    @mode = "Replace this string with your answer."
-  end
+    @sum = running_total
+
+    @mean = @sum / @count
+
+    running_total2 = 0
+    @numbers.each do |number|
+        running_total2 = running_total2 + ((number - @mean)**2)
+    end
+
+    @variance = running_total2 / @count
+
+    @standard_deviation = Math.sqrt(@variance)
+
+    @mode = @numbers.uniq.max_by{ |i| @numbers.count( i ) }
+
+    # @mode = count = Hash.new(0)
+
+    #    @numbers.each {|word| count[word] += 1}
+    #    count.sort_by { |k,v| v }.last
+    #    end
 end
