@@ -13,11 +13,11 @@ class CalculationsController < ApplicationController
 
     @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = @text.delete(' ').length
+    @character_count_without_spaces = @text.delete('^a-zA-Z1-9.!?:;').length
 
     @word_count = @text.split.length
 
-    @occurrences = @text.scan(@special_word).length
+    @occurrences = @text.downcase.scan(@special_word.downcase).length
   end
 
   def loan_payment
