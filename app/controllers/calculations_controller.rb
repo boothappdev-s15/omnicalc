@@ -60,6 +60,8 @@ class CalculationsController < ApplicationController
     #how to best format numbers, sprintf? but converts to string. possible to display one way andread another?
   end
 
+  #NOTE: worked on desc stats after class 4 due to theme/preferences problem with sublime
+
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
@@ -78,20 +80,41 @@ class CalculationsController < ApplicationController
 
     @range = @maximum - @minimum
 
-    @median =
-
-    if @count ==
-
+    if @count.odd?
+        @median = @sorted_numbers[ @count/2 ]
+    else
+        middle_first = @sorted_numbers[ @count/2]
+        middle_second = @sorted_numbers [ (@count/2) - 1]
+        @median = (middle_first + middle_second)/2
     end
 
     @sum = @numbers.sum
 
     @mean = @numbers.sum / @numbers.count
 
-    @variance = "Replace this string with your answer."
+    sq_differences = []
 
-    @standard_deviation = "Replace this string with your answer."
+    @numbers.each do |the_number|
+        difference = the_number - @mean
+        sq_difference = difference**2
+        sq_differences.push(sq_difference)
+        @variance= sq_differences.sum/@count
+    end
 
-    @mode = "Replace this string with your answer."
+
+    @standard_deviation = @variance**0.5
+
+    leader = nil
+    leader_count = 0
+    @numbers.each do |the_number|
+        occurences = @numbers.count(the_number)
+        if occurences > leader_count
+            leader = the_number
+            leader_count = occurences
+        end
+
+
+    @mode = leader
   end
+end
 end
