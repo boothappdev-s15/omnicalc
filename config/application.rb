@@ -17,6 +17,7 @@ Bundler.require(*Rails.groups)
 
 module Omnicalc
   class Application < Rails::Application
+    Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
