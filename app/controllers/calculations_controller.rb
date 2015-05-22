@@ -11,13 +11,16 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.delete( " ").length
 
-    @word_count = "Replace this string with your answer."
+    counts = Hash.new 0
 
-    @occurrences = "Replace this string with your answer."
+    @word_count = @text.split.size
+
+    @occurrences = @text.scan(/@word_count/).count
+
   end
 
   def loan_payment
@@ -32,7 +35,8 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = (@principal*@apr/100 + @principal)/(@years*12)
+
   end
 
   def time_between
@@ -48,13 +52,13 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
-  end
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60
+    @hours = @minutes / 60
+    @days = @hours /24
+    @weeks = @days / 7
+    @years = @weeks / 52
+end
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
@@ -64,26 +68,47 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort_by(&:to_i)
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    def median
+        sorted = @numbers.sort
+        middle = (sorted.length - 1) / 2.0
+        (sorted[middle.floor] + sorted[middle.ceil]) / 2.0
+    end
 
-    @sum = "Replace this string with your answer."
+    @median = median
 
-    @mean = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @variance = "Replace this string with your answer."
+    @mean = @numbers.sum / @count
 
-    @standard_deviation = "Replace this string with your answer."
+    def variance
+        c = 0
+        @numbers.each do |chido|
+                acum = (chido - @mean)**2
+                c = c + acum
+        end
+        variance=c/@count
+    end
 
-    @mode = "Replace this string with your answer."
+    @variance = variance
+
+    @standard_deviation = @variance ** 0.5
+
+    def mode
+        vec = @numbers
+        libre = vec.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+        vec.max_by { |v| libre[v] }
+    end
+
+    @mode = mode
   end
 end
