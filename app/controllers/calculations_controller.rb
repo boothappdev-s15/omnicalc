@@ -109,4 +109,3 @@ class CalculationsController < ApplicationController
 
     @mode = "Replace this string with your answer."
   end
-end
