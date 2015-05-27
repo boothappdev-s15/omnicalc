@@ -65,22 +65,22 @@ class CalculationsController < ApplicationController
   end
 
   def descriptive_statistics
-    @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
+    @numbers = params[:list_of_numbers].gsub(',','').split.map(&:to_f)
         @sorted=[]
             sorted = @sorted_numbers
-            len= sorted.length
-            @median =((sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0)
+            length = @sorted.length
+            @median =((@sorted[(@length.to_i - 1) / 2]) + (@sorted[@length.to_i / 2]) / 2.0)
 
         @var_ary= []
             variance=@numbers
-            var_ary.push((sq_mean - @mean) ** 2)
+            var_ary.push((sq_mean-@mean) ** 2)
             sum_variance= var_ary.sum
-            @variance= (@sum_variance/@count))
+            @variance= (@sum_variance/@count)
 
         @mode= ['']
             mode= @numbers
             count=Hash.new(0)
-            numbers.each {|number| count[number] +=1}
+            numbers.each {|number| count[@number] += 1}
             count.sort_by { |k,v| v }.last
 
     # ================================================================================
