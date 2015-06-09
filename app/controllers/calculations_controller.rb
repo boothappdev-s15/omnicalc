@@ -1,26 +1,26 @@
 class CalculationsController < ApplicationController
 
-  def word_count
-    @text = params[:user_text]
-    @special_word = params[:user_word]
+    def word_count
+        @text = params[:user_text]
+        @special_word = params[:user_word]
 
-    # ================================================================================
-    # Your code goes below.
-    # The text the user input is in the string @text.
-    # The special word the user input is in the string @special_word.
-    # ================================================================================
+# ================================================================================
+# Your code goes below.
+# The text the user input is in the string @text.
+# The special word the user input is in the string @special_word.
+# ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+@character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+@character_count_without_spaces = @character_count_with_spaces - @text.count(" ")
 
-    @word_count = "Replace this string with your answer."
+@word_count = @text.split.count
 
-    @occurrences = "Replace this string with your answer."
-  end
+@occurrences = @text.scan(@special_word).length
+end
 
-  def loan_payment
+def loan_payment
     @apr = params[:annual_percentage_rate].to_f
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
@@ -32,10 +32,13 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
-  end
+    r = @apr/1200
+    m = @years*12
 
-  def time_between
+    @monthly_payment = @principal*((r*(1+r)**m)/((1+r)**m-1))
+end
+
+def time_between
     @starting = Chronic.parse(params[:starting_time])
     @ending = Chronic.parse(params[:ending_time])
 
@@ -48,15 +51,81 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @days/365.25
+end
+
+def mean(list_of_numbers)
+  # Let's re-use the work we did above in the sum method
+  list_mean = sum(list_of_numbers) / list_of_numbers.count
+  return list_mean
+end
+
+def sum(list_of_numbers)
+  running_total = 0
+  list_of_numbers.each do |number|
+    running_total = running_total + number
+end
+return running_total
+end
+
+def variance(list_of_numbers)
+  # Let's re-use the work we did above in the mean method
+
+  list_mean = mean(list_of_numbers)
+  sq_differences = []
+
+  list_of_numbers.each do |number|
+    sq_differences.push (list_mean - number)**2
+end
+
+list_variance = mean(sq_differences)
+
+return list_variance
+
+end
+
+def standard_deviation(list_of_numbers)
+
+  list_sd = variance(list_of_numbers)**0.5
+  return list_sd
+end
+
+def median(list_of_numbers)
+
+    list_of_numbers = list_of_numbers.sort
+
+    m_pos = list_of_numbers.size / 2
+    return list_of_numbers.size % 2 == 1 ? list_of_numbers[m_pos] : mean(list_of_numbers[m_pos-1..m_pos])
+
+end
+
+def modes(list_of_numbers)
+
+    mode_counter = Hash.new(0)
+
+    list_of_numbers.each do |i|
+        mode_counter[i] = mode_counter[i] + 1
+    end
+
+    mode_array = []
+
+    mode_counter.each do |k, v|
+        if v == mode_counter.values.max
+          mode_array << k
+      end
   end
 
-  def descriptive_statistics
+  return mode_array
+
+end
+
+
+def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
     # ================================================================================
@@ -64,26 +133,26 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    @median = median(@numbers)
 
-    @sum = "Replace this string with your answer."
+    @sum = sum(@numbers)
 
-    @mean = "Replace this string with your answer."
+    @mean = mean(@numbers)
 
-    @variance = "Replace this string with your answer."
+    @variance = variance(@numbers)
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = standard_deviation(@numbers)
 
-    @mode = "Replace this string with your answer."
-  end
+    @mode = modes(@numbers)
+end
 end
