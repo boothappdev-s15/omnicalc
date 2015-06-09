@@ -11,13 +11,13 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.count "^ "
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split.count
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.scan(@special_word).count
   end
 
   def loan_payment
@@ -32,7 +32,11 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_interest = (@apr/(12*100))
+    @num_months = (@years*12)
+    @neg_num_months = (0-@num_months)
+
+    @monthly_payment = @principal*(@monthly_interest/(1-(1+@monthly_interest)**@neg_num_months))
   end
 
   def time_between
@@ -48,12 +52,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
   end
 
   def descriptive_statistics
@@ -64,26 +68,43 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum-@minimum
 
-    @median = "Replace this string with your answer."
+    if @sorted_numbers.length.odd?
+        @median = @sorted_numbers[(@sorted_numbers.length-1)/2]
+    else @sorted_numbers.length.even?
+        @median = (@sorted_numbers[@sorted_numbers.length/2] + @sorted_numbers[@sorted_numbers.length/2-1]).to_f
+    end
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @numbers.sum/@numbers.count
 
-    @variance = "Replace this string with your answer."
+    var_ary =[]
+    variance = @numbers
+    variance.each do |sq_mean|
+        var_ary.push((sq_mean-@mean)**2)
+        sum_variance = var_ary.sum
+        @variance = sum_variance/@count
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = @variance**(0.5)
 
-    @mode = "Replace this string with your answer."
+    counter = Hash.new(0)
+    @numbers.each do |count|
+        counter[count] +=1
+    end
+
+    @mode = counter.select {|k,v| v==counter.values.max}
+    #This is as far as I can get. I can't figure out how to just post the value, and not the key/value pair.
+
   end
 end
