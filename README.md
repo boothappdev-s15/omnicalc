@@ -19,7 +19,7 @@ It is a collection of calculators that do various things; count the number of wo
  1. **First fork** this repo, and *then* clone **your fork** to your computer.
  1. Navigate to the folder you downloaded in Terminal.
  1. Open up the entire folder in Sublime.
- 1. In Terminal,
+ 1. In Terminal, after you have routed the command line to the new omnicalc folder on your computer,
 
         bundle install
 
@@ -31,7 +31,7 @@ It is a collection of calculators that do various things; count the number of wo
  1. If the server doesn't start up successfully, you probably have an old app running somewhere. Find the old window or tab and close it. Then try `rails server` from within the `omnicalc` folder again.
  1. Once the server has successfully started up, in Chrome, go to [http://localhost:3000](http://localhost:3000).
  1. If all went well, you should see the New Word Count form. **If not, let me know right away.**
- 1. Type in some text and submit the form. 
+ 1. Type in some text and submit the form.
  1. On the results page, you will currently see just a bunch of placeholders.
  1. In Sublime, find the `/app/controllers/calculations_controller.rb` file.
  1. Locate the part of the file that looks like this:
