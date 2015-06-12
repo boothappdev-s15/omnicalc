@@ -11,13 +11,14 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ","").length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = (@text.strip.gsub("  "," ").count " ")+1
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.downcase.scan(" #{@special_word} ").length
+
   end
 
   def loan_payment
@@ -25,35 +26,24 @@ class CalculationsController < ApplicationController
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
 
-    # ================================================================================
-    # Your code goes below.
-    # The annual percentage rate the user input is in the decimal @apr.
-    # The number of years the user input is in the integer @years.
-    # The principal value the user input is in the decimal @principal.
-    # ================================================================================
-
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = ((@apr/1200)*@principal)/(1-(1+@apr/1200)**(-1*@years*12))
   end
 
   def time_between
     @starting = Chronic.parse(params[:starting_time])
     @ending = Chronic.parse(params[:ending_time])
 
-    # ================================================================================
-    # Your code goes below.
-    # The start time is in the Time @starting.
-    # The end time is in the Time @ending.
-    # Note: Ruby stores Times in terms of seconds since Jan 1, 1970.
+    #    # Note: Ruby stores Times in terms of seconds since Jan 1, 1970.
     #   So if you subtract one time from another, you will get an integer
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @days/365.25
   end
 
   def descriptive_statistics
@@ -64,26 +54,37 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = (@numbers.to_s.strip.gsub("  "," ").count " ")+1
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    @median =   if @count.odd? == TRUE
+                    @sorted_numbers[(@count/2)]
+                else (@sorted_numbers[(@count/2)-1] + @sorted_numbers[(@count/2)]) / 2
+                end
 
-    @sum = "Replace this string with your answer."
+    @sum =  @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @numbers.sum/@count
 
-    @variance = "Replace this string with your answer."
+    s = []
+    n = 0
+    while n <= @sorted_numbers.length - 1
+        s[n] = (@sorted_numbers[n] - @mean)**2
+        n = n+1
+    end
 
-    @standard_deviation = "Replace this string with your answer."
 
-    @mode = "Replace this string with your answer."
+    @variance = s.sum/@count
+
+    @standard_deviation = @variance**(0.5)
+
+    @mode = @numbers.uniq.max_by{|i| @numbers.count(i)}
   end
 end
