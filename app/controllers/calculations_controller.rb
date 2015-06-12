@@ -4,20 +4,23 @@ class CalculationsController < ApplicationController
     @text = params[:user_text]
     @special_word = params[:user_word]
 
-    # ================================================================================
-    # Your code goes below.
-    # The text the user input is in the string @text.
-    # The special word the user input is in the string @special_word.
-    # ================================================================================
+    @character_count_with_spaces = @text.length
 
+    words = @text.split
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = words.join.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @word_count = words.length
 
-    @word_count = "Replace this string with your answer."
+    # Does this next line simply create a new hash?  What does the number 0 do?
+    counts = Hash.new(0)
 
-    @occurrences = "Replace this string with your answer."
+    # I don't understand what this next line of code is doing.
+    # It goes into the words array, then for each element in the array it adds one to the 
+    # counts hash with that word as the key?  When was the hash key created?
+    words.each { |name| counts[name] += 1 }
+
+    @occurrences = counts["#{@special_word}"]
   end
 
   def loan_payment
@@ -25,65 +28,63 @@ class CalculationsController < ApplicationController
     @years = params[:number_of_years].to_i
     @principal = params[:principal_value].to_f
 
-    # ================================================================================
-    # Your code goes below.
-    # The annual percentage rate the user input is in the decimal @apr.
-    # The number of years the user input is in the integer @years.
-    # The principal value the user input is in the decimal @principal.
-    # ================================================================================
+    # converts apr into decimal
+    apr_d = @apr / 100
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = @principal * ( apr_d / ( 1 - ( 1 + apr_d ) ** - @years ) )
   end
 
   def time_between
     @starting = Chronic.parse(params[:starting_time])
     @ending = Chronic.parse(params[:ending_time])
 
-    # ================================================================================
-    # Your code goes below.
-    # The start time is in the Time @starting.
-    # The end time is in the Time @ending.
-    # Note: Ruby stores Times in terms of seconds since Jan 1, 1970.
-    #   So if you subtract one time from another, you will get an integer
-    #   number of seconds as a result.
-    # ================================================================================
-
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds / 60
+    @hours = @minutes / 60
+    @days = @hours / 24
+    @weeks = @days / 7
+    @years = @days / 365
   end
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
 
-    # ================================================================================
-    # Your code goes below.
-    # The numbers the user input are in the array @numbers.
-    # ================================================================================
+    @sorted_numbers = @numbers.sort
 
-    @sorted_numbers = "Replace this string with your answer."
+    @count = @numbers.length
 
-    @count = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @minimum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @maximum = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @range = "Replace this string with your answer."
+    @median = @count % 2 == 1 ? @sorted_numbers[@count/2] : (@sorted_numbers[@count/2 - 1] + @sorted_numbers[@count/2]).to_f / 2
+    # Is the previous expression the same as writing
+    # if @count % 2 == 1
+    #   sorted[len/2]
+    # else
+    #   (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
+    # end
 
-    @median = "Replace this string with your answer."
+    @sum = @numbers.inject(:+)
 
-    @sum = "Replace this string with your answer."
+    @mean = @sum / @count
 
-    @mean = "Replace this string with your answer."
+    # creates an array with the squared diferences
+    sqr_dif = []
+    @numbers.each do |number|
+      sqr_dif.push << (number - @mean) ** 2
+    end
 
-    @variance = "Replace this string with your answer."
+    @variance = sqr_dif.inject(:+) / sqr_dif.length
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = @variance ** 0.5
 
-    @mode = "Replace this string with your answer."
+    mode_count = Hash.new(0)
+    @sorted_numbers.each { |name| mode_count[name] += 1 }
+    mode_count = mode_count.sort_by { |number, count| count }
+
+    @mode = mode_count.last[0]
   end
 end
