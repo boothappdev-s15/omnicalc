@@ -11,13 +11,15 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.length-@text.count(' ')
 
-    @word_count = "Replace this string with your answer."
+    @word_count = (@text.split).length
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.downcase.scan(@special_word.downcase).length
+
+    #why didn't @text.count(@special_word) work? also tried that divided by @special_word.length
   end
 
   def loan_payment
@@ -32,7 +34,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    @monthly_payment = ((@apr*@principal)/(1-(1+@apr)**(@years*-1)))/12
   end
 
   def time_between
@@ -48,13 +50,17 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = (@starting-@ending).abs
+    @minutes = @seconds/60
+    @hours = (@minutes/60).round(2)
+    @days = (@hours/24).round(2)
+    @weeks = (@days/7).round(2)
+    @years = (@weeks.to_f/52).round(2)
+
+    #how to best format numbers, sprintf? but converts to string. possible to display one way andread another?
   end
+
+  #NOTE: worked on desc stats after class 4 due to theme/preferences problem with sublime
 
   def descriptive_statistics
     @numbers = params[:list_of_numbers].gsub(',', '').split.map(&:to_f)
@@ -64,26 +70,51 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    if @count.odd?
+        @median = @sorted_numbers[ @count/2 ]
+    else
+        middle_first = @sorted_numbers[ @count/2]
+        middle_second = @sorted_numbers [ (@count/2) - 1]
+        @median = (middle_first + middle_second)/2
+    end
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @numbers.sum / @numbers.count
 
-    @variance = "Replace this string with your answer."
+    sq_differences = []
 
-    @standard_deviation = "Replace this string with your answer."
+    @numbers.each do |the_number|
+        difference = the_number - @mean
+        sq_difference = difference**2
+        sq_differences.push(sq_difference)
+        @variance= sq_differences.sum/@count
+    end
 
-    @mode = "Replace this string with your answer."
+
+    @standard_deviation = @variance**0.5
+
+    leader = nil
+    leader_count = 0
+    @numbers.each do |the_number|
+        occurences = @numbers.count(the_number)
+        if occurences > leader_count
+            leader = the_number
+            leader_count = occurences
+        end
+
+
+    @mode = leader
   end
+end
 end
