@@ -81,7 +81,7 @@ class CalculationsController < ApplicationController
             count=Hash.new(0)
             numbers.each {|number| count[number] +=1}
             count.sort_by { |k,v| v }.last
-    end
+
     # ================================================================================
     # Your code goes below.
     # The numbers the user input are in the array @numbers.
@@ -109,3 +109,4 @@ class CalculationsController < ApplicationController
 
     @mode = "Replace this string with your answer."
   end
+end
